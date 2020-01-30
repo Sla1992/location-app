@@ -83,7 +83,7 @@ class Login extends Component {
         return (
             <div>
                 <h1>Login</h1>
-                <div className="container">
+                <div className="container col-2">
                     {/*<ShowInvalidCredentials hasLoginFailed={this.state.hasLoginFailed}/>*/}
                     {this.state.hasLoginFailed && (
                         <div className="alert alert-warning">Invalid Credentials</div>
@@ -96,6 +96,8 @@ class Login extends Component {
                         name="username"
                         value={this.state.username}
                         onChange={this.handleChange}
+                        className="form-control m-1"
+                        placeholder="Enter Username"
                     />
                     Password:{" "}
                     <input
@@ -103,6 +105,8 @@ class Login extends Component {
                         name="password"
                         value={this.state.password}
                         onChange={this.handleChange}
+                        className="form-control m-1"
+                        placeholder="Enter Passworde"
                     />
                     <button className="btn btn-success" onClick={this.loginClicked}>
                         Login

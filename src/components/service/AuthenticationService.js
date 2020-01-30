@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
+
 class AuthenticationService {
 
     executeBasicAuthenticationService(username, password) {
@@ -21,32 +23,33 @@ class AuthenticationService {
     registerSuccessfulLogin(username, password) {
         //let basicAuthHeader = 'Basic ' +  window.btoa(username + ":" + password)
         //console.log('registerSuccessfulLogin')
-        sessionStorage.setItem('authenticatedUser', username)
+        sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username)
         this.setupAxiosInterceptors(this.createBasicAuthToken(username, password))
     }
 
     registerSuccessfulLoginForJwt(username, token) {
-        sessionStorage.setItem('authenticatedUser', username)
+        sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username)
         this.setupAxiosInterceptors(this.createJWTToken(token))
     }
 
     createJWTToken(token) {
+        console.log("token: ", token)
         return 'Bearer ' + token
     }
 
 
     logout() {
-        sessionStorage.removeItem('authenticatedUser');
+        sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
     }
 
     isUserLoggedIn() {
-        let user = sessionStorage.getItem('authenticatedUser')
+        let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
         if (user === null) return false
         return true
     }
 
     getLoggedInUserName() {
-        let user = sessionStorage.getItem('authenticatedUser')
+        let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
         if (user === null) return ''
         return user
     }

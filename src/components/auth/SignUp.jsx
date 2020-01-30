@@ -6,8 +6,8 @@ class SignUp extends Component {
         return (
 
             <div>
-                <div className="container justify-content-center">
-                    <div className="text-left w-50">
+                <div className="container col-2">
+                    <div className="">
                         <h3>Sign Up</h3>
 
                         <label>Username</label>
