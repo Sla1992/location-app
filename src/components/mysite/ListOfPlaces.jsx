@@ -1,13 +1,111 @@
 import React, {Component} from 'react';
+import AuthenticationService from "../service/AuthenticationService";
+import TodoDataService from "../service/TodoDataService";
+import moment from 'moment';
+import PlacesComponent from "../places/PlacesComponent";
+import AuthenticatedRoute from "./AuthenticatedRoute";
 
 class ListOfPlaces extends Component {
-    render() {
-        return (
-            <div>
-                
-            </div>
-        );
+    constructor(props){
+        super(props)
+        this.state = {
+            todos : [],
+            message : null
+        };
+        this.deleteTodoClicked = this.deleteTodoClicked.bind(this);
+        this.updateTodoClicked = this.updateTodoClicked.bind(this);
+        this.addTodoClicked = this.addTodoClicked.bind(this);
+        this.refreshTodos = this.refreshTodos.bind(this);
     }
+    render() {
+        return(
+            <div>
+                <h1>List of Your Places</h1>
+                {this.state.message && <div className="alert alert-success">{this.state.message}</div>}
+
+                <div className="container">
+                    <div className="card mb-5">
+
+                        {
+
+                            this.state.todos.map(
+                                todo =>
+
+                                    <h5 key={todo.id}>
+                                        <td><img src="https://cdn.getyourguide.com/img/location_img-489-2532435674-148.jpg" className="card-img-top" alt="..."/></td>
+                                        <h5 className="card-title">{todo.title}</h5>
+                                        <p className="card-text">{todo.description}</p>
+                                        <p className="card-text">{todo.done.toString()}</p>
+                                        <p className="card-text">{moment(todo.targetDate).format('YYYY-MM-DD')}</p>
+                                        <p className="card-text"><button className="btn btn-success ml-2" onClick={() => this.updateTodoClicked(todo.id)}>Update</button>
+                                            <button className="btn btn-warning ml-2" onClick={() => this.deleteTodoClicked(todo.id)}>Delete</button><button id="scrollBtn" className="btn btn-success ml-2" onClick={this.addTodoClicked}>Add New Place</button>
+                                            <script src="scripts.js"/></p>
+                                    </h5>
+
+                            )
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
+
+    componentWillUnmount() {
+        console.log('ComponentWillUnmount')
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount')
+        this.refreshTodos();
+        console.log(this.state)
+    }
+
+    refreshTodos() {
+        let username = AuthenticationService.getLoggedInUserName()
+        TodoDataService.retrieveAllTodos(username)
+            .then (
+                response =>{
+                    //console.log(response);
+                    this.setState({todos: response.data})
+                }
+            )
+    }
+
+    deleteTodoClicked(id) {
+        let username = AuthenticationService.getLoggedInUserName()
+        // console.log("deleteClicked")
+        TodoDataService.deleteTodo(username, id).then(response =>{
+            this.setState({message : `Delete of place ${id} Successful`});
+            this.refreshTodos();
+        })
+    }
+
+    addTodoClicked(){
+        //console.log('update' + id)
+        this.props.history.push(`/places/-1`)
+    }
+
+    updateTodoClicked(id) {
+        console.log('update' + id)
+        this.props.history.push(`/places/${id}`)
+        // let username = AuthenticationService.getLoggedInUserName()
+        // // console.log("deleteClicked")
+        // TodoDataService.deleteTodo(username, id).then(response =>{
+        //     this.setState({message : `Delete of todo ${id} Successful`});
+        //     this.refreshTodos();
+        // })
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        console.log('shouldComponentUpdate')
+        console.log(nextProps)
+        console.log(nextState)
+        return true
+    }
+
+
 }
 
 export default ListOfPlaces;
