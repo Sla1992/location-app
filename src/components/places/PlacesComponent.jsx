@@ -19,21 +19,7 @@ class PlacesComponent extends Component {
         this.validate = this.validate.bind(this)
     }
 
-    componentDidMount() {
 
-        if(this.state.id===-1){
-            return;
-        }
-
-        let username = AuthenticationService.getLoggedInUserName();
-
-        TodoDataService.retrieveTodo(username, this.state.id)
-            .then(response => this.setState({
-                    title: response.data.title,
-                    description: response.data.description,
-                    targetDate: moment(response.data.targetDate).format('YYYY-MM-DD')
-                }))
-    }
 
     validate(values){
         let errors = {}
@@ -81,6 +67,32 @@ class PlacesComponent extends Component {
         }
 
         console.log(values)
+
+    }
+
+    componentDidMount() {
+
+        if(this.state.id===-1){
+            let username = AuthenticationService.getLoggedInUserName();
+
+            TodoDataService.retrieveTodo(username, this.state.id)
+                .then(response => this.setState({
+                    title: response.data.title,
+                    description: response.data.description,
+                    targetDate: moment(response.data.targetDate).format('YYYY-MM-DD')
+                }));
+
+        } else if (this.state.id!==-1) {
+            let username = AuthenticationService.getLoggedInUserName();
+
+            TodoDataService.retrieveTodo(username, this.state.id)
+                .then(response => this.setState({
+                    title: response.data.title,
+                    description: response.data.description,
+                    targetDate: moment(response.data.targetDate).format('YYYY-MM-DD')
+                }));
+
+        }
 
     }
 

@@ -106,7 +106,7 @@ class Login extends Component {
                         value={this.state.password}
                         onChange={this.handleChange}
                         className="form-control m-1"
-                        placeholder="Enter Passworde"
+                        placeholder="Enter Password"
                     />
                     <button className="btn btn-success" onClick={this.loginClicked}>
                         Login
