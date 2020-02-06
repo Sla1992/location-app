@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom'
 import AuthenticationService from "../service/AuthenticationService";
 import TodoDataService from "../service/TodoDataService";
 import moment from 'moment';
-import PlacesComponent from "../places/PlacesComponent";
-import AuthenticatedRoute from "./AuthenticatedRoute";
 
 class ListOfPlaces extends Component {
     constructor(props){
@@ -17,6 +16,66 @@ class ListOfPlaces extends Component {
         this.addTodoClicked = this.addTodoClicked.bind(this);
         this.refreshTodos = this.refreshTodos.bind(this);
     }
+
+    componentWillUnmount() {
+        console.log('ComponentWillUnmount')
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount')
+        this.refreshTodos();
+        console.log(this.state)
+    }
+
+
+    refreshTodos() {
+        let username = AuthenticationService.getLoggedInUserName()
+        TodoDataService.retrieveAllTodos(username)
+            .then(
+                response => {
+                    //console.log(response);
+                    this.setState({ todos: response.data })
+                }
+            )
+    }
+
+
+    deleteTodoClicked(id) {
+        let username = AuthenticationService.getLoggedInUserName()
+        //console.log(id + " " + username);
+        TodoDataService.deleteTodo(username, id)
+            .then(
+                response => {
+                    this.setState({ message: `Delete of todo ${id} Successful` })
+                    this.refreshTodos()
+                }
+            )
+
+    }
+
+    addTodoClicked(id){
+        console.log('update' + id)
+        this.props.history.push(`/places/-1`)
+    }
+
+    updateTodoClicked(id) {
+        console.log('update' + id);
+        this.props.history.push(`/places/${id}`)
+        // let username = AuthenticationService.getLoggedInUserName()
+        // // console.log("deleteClicked")
+        // TodoDataService.deleteTodo(username, id).then(response =>{
+        //     this.setState({message : `Delete of todo ${id} Successful`});
+        //     this.refreshTodos();
+        // })
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        console.log('shouldComponentUpdate')
+        console.log(nextProps)
+        console.log(nextState)
+        return true;
+    }
+
     render() {
         return(
             <div>
@@ -42,7 +101,7 @@ class ListOfPlaces extends Component {
                                             <button className="btn btn-warning mr-3 mb-3" onClick={() => this.updateTodoClicked(todo.id)}>Update</button>
                                             <button className="btn btn-danger mb-3" onClick={() => this.deleteTodoClicked(todo.id)}>Delete</button>
 
-                                            <script src="scripts.js"/></p>
+                                        </p>
                                     </span>
 
                             )
@@ -55,62 +114,7 @@ class ListOfPlaces extends Component {
         )
     }
 
-    componentWillUnmount() {
-        console.log('ComponentWillUnmount')
-    }
-
-    componentDidMount() {
-        console.log('componentDidMount')
-        this.refreshTodos();
-        console.log(this.state)
-    }
-
-    refreshTodos() {
-        let username = AuthenticationService.getLoggedInUserName()
-        TodoDataService.retrieveAllTodos(username)
-            .then (
-                response =>{
-                    //console.log(response);
-                    this.setState({todos: response.data})
-                }
-            )
-    }
-
-    deleteTodoClicked(id) {
-        let username = AuthenticationService.getLoggedInUserName()
-        // console.log("deleteClicked")
-        TodoDataService.deleteTodo(username, id).then(response =>{
-            console.log("refreshtodocomingnext")
-            this.setState({message : `Delete of place ${id} Successful`});
-            console.log("refreshtodocomingnext")
-            this.refreshTodos();
-        })
-    }
-
-    addTodoClicked(){
-        //console.log('update' + id)
-        this.props.history.push(`/places/-1`)
-    }
-
-    updateTodoClicked(id) {
-        console.log('update' + id)
-        this.props.history.push(`/places/${id}`)
-        // let username = AuthenticationService.getLoggedInUserName()
-        // // console.log("deleteClicked")
-        // TodoDataService.deleteTodo(username, id).then(response =>{
-        //     this.setState({message : `Delete of todo ${id} Successful`});
-        //     this.refreshTodos();
-        // })
-    }
-
-    shouldComponentUpdate(nextProps, nextState){
-        console.log('shouldComponentUpdate')
-        console.log(nextProps)
-        console.log(nextState)
-        return true
-    }
-
 
 }
 
-export default ListOfPlaces;
+export default withRouter(ListOfPlaces);

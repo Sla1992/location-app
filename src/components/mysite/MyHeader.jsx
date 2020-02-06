@@ -17,11 +17,8 @@ class MyHeader extends Component {
                             <Link to="/login" className="text-white text-decoration-none">Who?</Link>
                         </li>}
                         {isUserLoggedIn &&<li className="nav-link">
-                            <Link to="/" className="text-white text-decoration-none">{this.props.match.params.username}</Link>
+                            <Link to="/" className="text-white text-decoration-none">{AuthenticationService.getLoggedInUserName()}</Link>
                         </li>}
-                        <li className="nav-link">
-                            <Link to="#" className="text-white text-decoration-none">Home</Link>
-                        </li>
                         {isUserLoggedIn &&<li className="nav-link">
                             <Link to="/places" className="text-white text-decoration-none">All Places</Link>
                         </li>}

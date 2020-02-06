@@ -11,6 +11,7 @@ import MyHeader from "./MyHeader";
 import MyFooter from "./MyFooter";
 import Welcome from "./Welcome";
 import PlacesComponent from "../places/PlacesComponent";
+import AuthenticationService from "../service/AuthenticationService";
 
 class MySite extends Component {
     render(){

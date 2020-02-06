@@ -1,16 +1,17 @@
 import axios from 'axios'
+import { API_URL } from '../../Constants'
 
-export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
+export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 
 class AuthenticationService {
 
     executeBasicAuthenticationService(username, password) {
-        return axios.get('http://localhost:8080/basicauth',
+        return axios.get(`${API_URL}/basicauth`,
             { headers: { authorization: this.createBasicAuthToken(username, password) } })
     }
 
     executeJwtAuthenticationService(username, password) {
-        return axios.post('http://localhost:8080/authenticate', {
+        return axios.post(`${API_URL}/authenticate`, {
             username,
             password
         })
@@ -33,7 +34,6 @@ class AuthenticationService {
     }
 
     createJWTToken(token) {
-        console.log("token: ", token)
         return 'Bearer ' + token
     }
 
@@ -55,6 +55,7 @@ class AuthenticationService {
     }
 
     setupAxiosInterceptors(token) {
+
         axios.interceptors.request.use(
             (config) => {
                 if (this.isUserLoggedIn()) {
