@@ -12,6 +12,7 @@ import MyFooter from "./MyFooter";
 import Welcome from "./Welcome";
 import PlacesComponent from "../places/PlacesComponent";
 import AuthenticationService from "../service/AuthenticationService";
+import VisionComponent from "./VisionComponent";
 
 class MySite extends Component {
     render(){
@@ -26,6 +27,7 @@ class MySite extends Component {
                             <AuthenticatedRoute path="/welcome/:name" component={Welcome}/>
                             <AuthenticatedRoute path="/places/:id" component={PlacesComponent}/>
                             <AuthenticatedRoute path="/places" component={ListOfPlaces}/>
+                            <AuthenticatedRoute path="/vision" component={VisionComponent}/>
                             <Route path="/signup" component={SignUp}/>
                             <Route component={Error}/>
                         </Switch>

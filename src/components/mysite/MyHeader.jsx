@@ -25,6 +25,9 @@ class MyHeader extends Component {
                         {isUserLoggedIn &&<li className="nav-link">
                             <Link to="/places/-1" className="text-white text-decoration-none">Add Place</Link>
                         </li>}
+                        {isUserLoggedIn &&<li className="nav-link">
+                            <Link to="/vision" className="text-white text-decoration-none">Vision</Link>
+                        </li>}
                     </ul>
 
                     <ul className="navbar-nav navbar-collapse justify-content-end">
