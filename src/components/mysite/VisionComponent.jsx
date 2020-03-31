@@ -19,8 +19,7 @@ class VisionComponent extends Component {
         return (
             <div className="container">
                 <h1>Vision API</h1>
-                <h3>Wähle ein Bild aus</h3>
-                <h4> Falls du nach deinem ersten Bild keins auswählst, wird das vorherige neu geladen!</h4>
+                <h3 className="mt-3">Wähle ein Bild aus</h3>
                 <div className="input">
                 <input id="imageUpload" type="file" onChange={this.handleImageChange}
                        accept="image/png, image/jpeg" className="uploadImage h-25"/>
@@ -70,6 +69,7 @@ class VisionComponent extends Component {
     };
 
     sendToGoogle = () => {
+        const API_KEY = '' // Bitte eigenen key verwenden
         let apireq =
             {
                 "requests":
@@ -88,7 +88,7 @@ class VisionComponent extends Component {
                     ]
             };
 
-        axios.post('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyB-Fqo16pGG1GetH8M2rj1ouDbdNtQzdH4', apireq)
+        axios.post('https://vision.googleapis.com/v1/images:annotate?key=' + API_KEY, apireq)
             .then(res => {
                 console.log(res.data.responses[0].labelAnnotations);
 
